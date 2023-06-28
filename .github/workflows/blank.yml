@@ -1,0 +1,22 @@
+name: OpenVPN Server
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Install OpenVPN
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openvpn
+      - name: Create VPN Server Configuration
+        run: |
+          sudo bash ./scripts/create_vpn_config.sh
+      - name: Start OpenVPN Server
+        run: |
+          sudo systemctl start openvpn-server@server
